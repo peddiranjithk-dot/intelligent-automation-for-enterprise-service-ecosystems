@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IAES — Intelligent Automation for Enterprise Service Ecosystems</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════ TOP BAR -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-left">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <polygon points="10,1 18,6 18,14 10,19 2,14 2,6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="10" cy="10" r="2.5" fill="currentColor"/>
+            <line x1="10" y1="1" x2="10" y2="7.5" stroke="currentColor" stroke-width="1"/>
+            <line x1="10" y1="12.5" x2="10" y2="19" stroke="currentColor" stroke-width="1"/>
+            <line x1="2" y1="6" x2="7.5" y2="9" stroke="currentColor" stroke-width="1"/>
+            <line x1="12.5" y1="11" x2="18" y2="14" stroke="currentColor" stroke-width="1"/>
+            <line x1="18" y1="6" x2="12.5" y2="9" stroke="currentColor" stroke-width="1"/>
+            <line x1="7.5" y1="11" x2="2" y2="14" stroke="currentColor" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">IAES</span>
+          <span class="brand-sub">Enterprise Automation</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="topnav">
+      <a class="nav-link active" data-page="dashboard" href="#">
+        <i class="ti ti-layout-dashboard"></i> Dashboard
+      </a>
+      <a class="nav-link" data-page="pipelines" href="#">
+        <i class="ti ti-git-branch"></i> Pipelines
+      </a>
+      <a class="nav-link" data-page="services" href="#">
+        <i class="ti ti-server-2"></i> Services
+      </a>
+      <a class="nav-link" data-page="workflows" href="#">
+        <i class="ti ti-wand"></i> Workflows
+      </a>
+      <a class="nav-link" data-page="analytics" href="#">
+        <i class="ti ti-chart-dots-3"></i> Analytics
+      </a>
+      <a class="nav-link" data-page="aiops" href="#">
+        <i class="ti ti-brain"></i> AI Ops
+      </a>
+    </nav>
+
+    <div class="topbar-right">
+      <div class="health-indicator" id="globalHealth">
+        <span class="pulse-dot green"></span>
+        <span class="health-text">All Systems Operational</span>
+      </div>
+      <button class="icon-btn" id="notifBtn" title="Notifications">
+        <i class="ti ti-bell"></i>
+        <span class="notif-badge" id="notifBadge">3</span>
+      </button>
+      <div class="avatar-btn" title="Admin User">
+        <span>AE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════ NOTIFICATION PANEL -->
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-header">
+      <span>Notifications</span>
+      <button class="clear-btn" onclick="clearNotifs()">Clear all</button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ MAIN LAYOUT -->
+  <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <p class="sidebar-label">Core</p>
+        <a class="sidebar-item active" data-page="dashboard" href="#">
+          <i class="ti ti-layout-dashboard"></i><span>Overview</span>
+        </a>
+        <a class="sidebar-item" data-page="pipelines" href="#">
+          <i class="ti ti-git-branch"></i><span>Pipelines</span>
+          <em class="sb-count green">12</em>
+        </a>
+        <a class="sidebar-item" data-page="services" href="#">
+          <i class="ti ti-server-2"></i><span>Services</span>
+        </a>
+        <a class="sidebar-item" data-page="workflows" href="#">
+          <i class="ti ti-wand"></i><span>Workflows</span>
+          <em class="sb-count blue">48</em>
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <p class="sidebar-label">Intelligence</p>
+        <a class="sidebar-item" data-page="analytics" href="#">
+          <i class="ti ti-chart-dots-3"></i><span>Analytics</span>
+        </a>
+        <a class="sidebar-item" data-page="aiops" href="#">
+          <i class="ti ti-brain"></i><span>AI Ops</span>
+          <em class="sb-count purple">AI</em>
+        </a>
+        <a class="sidebar-item" href="#">
+          <i class="ti ti-alert-triangle"></i><span>Incidents</span>
+          <em class="sb-count red">3</em>
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <p class="sidebar-label">Platform</p>
+        <a class="sidebar-item" href="#">
+          <i class="ti ti-users-group"></i><span>Teams</span>
+        </a>
+        <a class="sidebar-item" href="#">
+          <i class="ti ti-shield-check"></i><span>Compliance</span>
+        </a>
+        <a class="sidebar-item" href="#">
+          <i class="ti ti-settings-2"></i><span>Settings</span>
+        </a>
+      </div>
+
+      <div class="sidebar-status">
+        <div class="sys-metric">
+          <span class="sm-label">CPU</span>
+          <div class="sm-bar"><div class="sm-fill" style="width:62%;background:#3b82f6"></div></div>
+          <span class="sm-val">62%</span>
+        </div>
+        <div class="sys-metric">
+          <span class="sm-label">MEM</span>
+          <div class="sm-bar"><div class="sm-fill" style="width:78%;background:#8b5cf6"></div></div>
+          <span class="sm-val">78%</span>
+        </div>
+        <div class="sys-metric">
+          <span class="sm-label">NET</span>
+          <div class="sm-bar"><div class="sm-fill" style="width:45%;background:#10b981"></div></div>
+          <span class="sm-val">45%</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-host" id="pageHost">
+
+      <!-- ══════════ PAGE: DASHBOARD -->
+      <section class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Automation Overview</h1>
+            <p class="page-desc">Real-time intelligence across all enterprise service ecosystems</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn outline" onclick="refreshDashboard()">
+              <i class="ti ti-refresh"></i> Refresh
+            </button>
+            <button class="btn primary" onclick="showModal('newWorkflow')">
+              <i class="ti ti-plus"></i> New Workflow
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI STRIP -->
+        <div class="kpi-strip" id="kpiStrip"></div>
+
+        <!-- MAIN GRID ROW 1 -->
+        <div class="grid-cols-3-1">
+          <div class="card" id="throughputCard">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-activity"></i> Automation Throughput (24h)</span>
+              <span class="chip teal">Live</span>
+            </div>
+            <canvas id="throughputChart" height="130"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-chart-pie-4"></i> Task Status</span>
+            </div>
+            <div class="donut-center-wrap">
+              <canvas id="donutChart" width="130" height="130"></canvas>
+              <div class="donut-overlay">
+                <span class="donut-pct" id="donutPct">97.1%</span>
+                <span class="donut-lbl">Success</span>
+              </div>
+            </div>
+            <div class="legend-stack" id="donutLegend"></div>
+          </div>
+        </div>
+
+        <!-- MAIN GRID ROW 2 -->
+        <div class="grid-cols-2">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-bolt"></i> Active Pipelines</span>
+              <span class="live-badge">● Live</span>
+            </div>
+            <div id="livePipelinesList"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-alert-triangle"></i> System Alerts</span>
+              <span class="chip red" id="alertChip">3 Critical</span>
+            </div>
+            <div id="alertsContainer"></div>
+          </div>
+        </div>
+
+        <!-- SERVICE HEALTH ROW -->
+        <div class="card" style="margin-top:16px">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-topology-star-3"></i> Service Ecosystem Health</span>
+            <button class="btn outline sm" onclick="navigate('services')">View All</button>
+          </div>
+          <div class="service-health-grid" id="serviceHealthGrid"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ PAGE: PIPELINES -->
+      <section class="page" id="page-pipelines">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Automation Pipelines</h1>
+            <p class="page-desc">Orchestrate, monitor and manage intelligent service workflows</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn outline" onclick="importPipeline()"><i class="ti ti-upload"></i> Import</button>
+            <button class="btn primary" onclick="showModal('newPipeline')"><i class="ti ti-plus"></i> Create Pipeline</button>
+          </div>
+        </div>
+
+        <!-- Pipeline flow canvas -->
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-git-pull-request"></i> Order Processing Automation</span>
+            <div style="display:flex;gap:8px">
+              <span class="chip green">● Running</span>
+              <button class="btn outline sm" onclick="editPipeline()"><i class="ti ti-pencil"></i> Edit</button>
+            </div>
+          </div>
+          <div class="flow-canvas" id="flowCanvas"></div>
+          <div class="pipeline-stats-row">
+            <div class="pstat"><i class="ti ti-clock"></i> Avg time: <b>0.8s</b></div>
+            <div class="pstat"><i class="ti ti-check"></i> Success: <b>99.2%</b></div>
+            <div class="pstat"><i class="ti ti-refresh"></i> Runs today: <b id="pipelineRunCount">12,480</b></div>
+            <div class="pstat"><i class="ti ti-cpu"></i> AI steps: <b>3</b></div>
+          </div>
+        </div>
+
+        <div class="grid-cols-2">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-list-details"></i> All Pipelines</span>
+              <div style="display:flex;gap:6px">
+                <button class="btn outline sm" onclick="filterPipelines('all')">All</button>
+                <button class="btn outline sm" onclick="filterPipelines('running')">Running</button>
+                <button class="btn outline sm" onclick="filterPipelines('failed')">Failed</button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table" id="pipelinesTable">
+                <thead>
+                  <tr><th>Pipeline</th><th>Status</th><th>Runs</th><th>SLA</th><th>Last Run</th></tr>
+                </thead>
+                <tbody id="pipelinesBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-terminal-2"></i> Event Stream</span>
+              <span class="live-badge">● Live</span>
+            </div>
+            <div class="log-stream" id="logStream"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ PAGE: SERVICES -->
+      <section class="page" id="page-services">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Service Ecosystem</h1>
+            <p class="page-desc">Monitor, manage and connect enterprise service integrations</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn outline"><i class="ti ti-filter"></i> Filter</button>
+            <button class="btn primary" onclick="showModal('connectService')"><i class="ti ti-plug-connected"></i> Connect Service</button>
+          </div>
+        </div>
+
+        <div class="kpi-strip" id="svcKpiStrip"></div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-chart-bar"></i> Service Performance Index</span>
+            <select class="mini-select" onchange="updateSvcChart(this.value)">
+              <option value="latency">Latency</option>
+              <option value="uptime">Uptime</option>
+              <option value="throughput">Throughput</option>
+            </select>
+          </div>
+          <canvas id="serviceChart" height="110"></canvas>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-server"></i> Connected Services</span>
+            <div style="display:flex;gap:6px">
+              <span class="chip green">24 healthy</span>
+              <span class="chip amber">1 degraded</span>
+              <span class="chip red">1 down</span>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table" id="servicesTable">
+              <thead>
+                <tr><th>Service</th><th>Type</th><th>Status</th><th>Uptime</th><th>Latency</th><th>Req/min</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="servicesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ PAGE: WORKFLOWS -->
+      <section class="page" id="page-workflows">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Workflow Designer</h1>
+            <p class="page-desc">Build and manage intelligent automation workflows visually</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn outline"><i class="ti ti-template"></i> Templates</button>
+            <button class="btn primary"><i class="ti ti-plus"></i> New Workflow</button>
+          </div>
+        </div>
+
+        <div class="grid-cols-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-apps"></i> Workflow Library</span>
+            </div>
+            <div class="workflow-grid" id="workflowGrid"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-clock-hour-9"></i> Execution History</span>
+            </div>
+            <canvas id="execHistChart" height="160"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-table"></i> Recent Executions</span>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr><th>Workflow</th><th>Triggered By</th><th>Duration</th><th>Steps</th><th>Result</th><th>Time</th></tr>
+              </thead>
+              <tbody id="execBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ PAGE: ANALYTICS -->
+      <section class="page" id="page-analytics">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Analytics & Insights</h1>
+            <p class="page-desc">Deep visibility into automation performance and business impact</p>
+          </div>
+          <div class="header-actions">
+            <select class="mini-select" style="padding:8px 12px">
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+            </select>
+            <button class="btn outline"><i class="ti ti-download"></i> Export</button>
+          </div>
+        </div>
+
+        <div class="grid-cols-4" style="margin-bottom:16px" id="analyticsKpis"></div>
+
+        <div class="grid-cols-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><span class="card-title"><i class="ti ti-trending-up"></i> Automation Growth</span></div>
+            <canvas id="growthChart" height="160"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title"><i class="ti ti-currency-dollar"></i> Cost Savings by Category</span></div>
+            <canvas id="savingsChart" height="160"></canvas>
+          </div>
+        </div>
+
+        <div class="grid-cols-2">
+          <div class="card">
+            <div class="card-header"><span class="card-title"><i class="ti ti-radar"></i> Top Automations by Volume</span></div>
+            <canvas id="volumeChart" height="180"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title"><i class="ti ti-clock"></i> Resolution Time Distribution</span></div>
+            <canvas id="resolutionChart" height="180"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ PAGE: AI OPS -->
+      <section class="page" id="page-aiops">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">AI Operations Center</h1>
+            <p class="page-desc">Intelligent anomaly detection, predictive resolution & AI assistant</p>
+          </div>
+          <div class="header-actions">
+            <div class="chip purple" style="padding:6px 12px">
+              <i class="ti ti-brain"></i> Model: claude-sonnet-4-20250514
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-cols-4" style="margin-bottom:16px" id="aiKpis"></div>
+
+        <div class="grid-cols-2" style="margin-bottom:16px">
+          <!-- AI CHAT -->
+          <div class="card chat-card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-message-chatbot"></i> AI Operations Assistant</span>
+              <span class="live-badge">● Online</span>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-footer">
+              <input class="chat-input" id="chatInput"
+                placeholder="Ask about your systems, incidents, or get recommendations..."
+                onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}" />
+              <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+                <i class="ti ti-send"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- AI MODEL CHART -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-chart-area"></i> AI Decision Accuracy</span>
+            </div>
+            <canvas id="aiAccuracyChart" height="160"></canvas>
+            <div class="grid-cols-2" style="margin-top:12px;gap:10px">
+              <div class="mini-stat-card">
+                <div class="msc-val" style="color:#10b981">98.7%</div>
+                <div class="msc-lbl">Classification Accuracy</div>
+              </div>
+              <div class="mini-stat-card">
+                <div class="msc-val" style="color:#06b6d4">12ms</div>
+                <div class="msc-lbl">Avg Inference Time</div>
+              </div>
+              <div class="mini-stat-card">
+                <div class="msc-val" style="color:#8b5cf6">94.3K</div>
+                <div class="msc-lbl">Decisions Today</div>
+              </div>
+              <div class="mini-stat-card">
+                <div class="msc-val" style="color:#f59e0b">99.1%</div>
+                <div class="msc-lbl">Auto-resolution Rate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANOMALY TABLE -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-radar-2"></i> Anomaly Detection Feed</span>
+            <span class="chip purple">ML Active</span>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr><th>Time</th><th>Service</th><th>Anomaly</th><th>Severity</th><th>Confidence</th><th>AI Action</th><th>Status</th></tr>
+              </thead>
+              <tbody id="anomalyBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ═══════════════════════════════════════ MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()" id="modalBox">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitle">New Workflow</span>
+        <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
